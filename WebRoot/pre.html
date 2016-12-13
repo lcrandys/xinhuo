@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>预贷款用户记录</title>
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+   <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+    
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/user-list.css" type="text/css" media="screen" />
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.10.2.min.js"></script>
+     <!--加载分页js  -->
+	<script type="text/javascript" src="js/jquery.pagination.js"></script>		<script type="text/javascript" src="js/getcookie.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<script>
+	function  xzls(obj){
+		var preid =obj.getAttribute("preid");
+		$.ajax({
+			type : "get",
+			url : "services/getliushui",
+			data : {
+				preid :　preid,
+			},
+			dataType : "json",
+			success : function(data) {
+				alert("chengg")
+			}
+		});
+	}
+
+	$.getUrlParam = function(name)
+	{
+	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	    var r = window.location.search.substr(1).match(reg);
+	    if (r!=null) return unescape(r[2]); return null; 
+	}
+	function load(){
+		var session = get_cookie("session");
+		if(session!="1122"){
+			window.location.href="signin.html";
+		}
+	}
+
+	$(document).ready(function() {
+		//获取访问次数	
+		$.ajax({
+			type : "get",
+			url : "services/getPrecishu",
+			dataType : "json",
+			success : function(data) {
+				$("#yjd").html(data);
+				$("#yjdsj").html(data);
+			}
+		});
+		
+		//获取访问次数	
+		$.ajax({
+			type : "get",
+			async:false,
+			url : "services/getPrecishu",
+			dataType : "json",
+			success : function(data) {
+				ydksum = data;
+			}
+		});
+		
+		/*----------------------分页js start ---------------------*/
+		//回调函数的作用是显示对应分页的列表项内容
+		//回调函数在用户每次点击分页链接的时候执行
+		//参数page_index{int整型}表示当前的索引页
+		var initPagination = function() {
+			var num_entries = Math.ceil(ydksum/20);
+			// 创建分页
+			$("#Pagination").pagination(num_entries, {
+				num_edge_entries: 1, //边缘页数
+				num_display_entries: 4, //主体页数
+				callback: pageselectCallback,
+				items_per_page:1 //每页显示1项
+			});
+		}();
+		
+		function pageselectCallback(page_index, jq){
+			var pageNo = page_index+1;
+			$.ajax({
+				type : "get",
+				url : "services/getPre",
+				data : {
+						pageNo : pageNo
+					},
+				dataType : "json",
+				success : function(data) {
+					var result = eval(data);
+					var html="";
+					var dmid = '<tr class=\"first\"><td><a class=\"btn-glow\" onclick=\"xzls(this);\"  preid=\"';
+					var dmid1 = '\">下载流水</a><span class=\"subtext\">';
+					var dmmc ='</span></td><td>';
+					var saasid = '</td><td>';
+					var saasmc = '</td><td class=\"align-right\">';
+					var yjdsj = ' </td><td class=\"align-right\">';
+					var yjdr = '</td><td class=\"align-right\">';
+					var phone = '</td><td class=\"align-right\">';
+					var end = '</td></tr>';
+					for(var i= 0; i< result.length;i++){
+						if(result[i]["dianmianId"]==null){
+							var liushuiId = result[i]["saasid"].toString();
+						}else{
+							var liushuiId = result[i]["saasid"].toString()+result[i]["dianmianId"].toString();
+						}
+
+						var jilu = dmid+result[i]["id"]+dmid1+result[i]["dianmianId"]+dmmc+result[i]["dmmc"]+saasmc+result[i]["saasmc"]+yjdsj+result[i]["shijian"]+yjdr+result[i]["man"]+phone+result[i]["phone"]+end;
+						html = html + jilu;
+					}
+					$("tbody").html(html);
+				}
+			}); 
+		}
+		/*----------------------分页js end -----------------------*/
+		
+	});
+	
+</script>
+<body onload="javascript:load()">
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            <a class="brand" href="index.html"><img src="img/logo.png" /></a>
+        </div>
+    </div>
+    <!-- end navbar -->
+
+   <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>                
+                <a href="index.html">
+                    <i class="icon-home"></i>
+                    <span>访问记录</span>
+                </a>
+            </li>                
+             <li class="active">
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div> 
+                <a class="dropdown-toggle" href="pre.html">
+                    <i class="icon-group"></i>
+                    <span>预贷款用户</span>
+                </a>
+                </li>
+       		<li>
+                <a href="user-list.html">
+                    <i class="icon-calendar-empty"></i>
+                    <span>贷款用户</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+    
+
+	<!-- main container -->
+    <div class="content">
+
+        <div class="container-fluid">
+
+            <!-- upper main stats -->
+            <div id="main-stats">
+                <div class="row-fluid stats-row">
+                    <div class="span3 stat">
+                        <div class="data" style="font-weight: 600;font-size:16px;padding-top: 37px;padding-bottom: 30px; ">
+                           预借贷人数： <span class="number" id="yjd"></span>人
+                        </div>
+                    </div>
+            </div>
+            
+            <!-- end upper main stats -->
+        
+        <!-- settings changer -->
+                <!-- Users table -->
+                <div class="row-fluid table">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="span2 sortable">
+                                    	店面ID
+                                </th>
+                                <th class="span2 sortable">
+                                    <span class="line"></span>店面名称
+                                </th>
+                                <th class="span2 sortable align-right">
+                                    <span class="line"></span>来源 
+                                </th>
+                                <th class="span2 sortable align-right">
+                                    <span class="line"></span>预借贷时间  
+                                </th>
+                                <th class="span2 sortable align-right">
+                                    <span class="line"></span>预借贷人
+                                </th>
+                                <th class="span2 sortable align-right">
+                                    <span class="line"></span>预借贷人手机号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb">
+                       		<!--数据开始  -->
+                            
+                       		<!--数据结束  -->
+                        </tbody>
+                    </table>
+                </div>
+                <span style="font-size:16px;padding:1px 9px 1px 9px;font-family: Arial, sans-serif;">共<span id="yjdsj" style="color: #3b9ff3;padding: 1px 2px 1px 2px;"></span>条数据</span>
+                    <div id="Pagination" class="pagination" style="float:right;font-size:14px;">	
+                	</div>
+                <!-- end table sample -->
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+</body>
+</html>

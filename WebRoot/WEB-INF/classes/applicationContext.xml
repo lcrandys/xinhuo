@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	<bean id="test" class="cn.xinhuo.entity.Test" scope="singleton"/>   
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="org.gjt.mm.mysql.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/xinhuo?useUnicode=true&amp;characterEncoding=UTF-8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>cn/xinhuo/entity/Daikuanjilu.hbm.xml </value>
+				<value>cn/xinhuo/entity/Dianmian.hbm.xml</value>
+				<value>cn/xinhuo/entity/Dianmianliushui.hbm.xml </value>
+				<value>cn/xinhuo/entity/Fangwenjilu.hbm.xml</value>
+				<value>cn/xinhuo/entity/SaaS.hbm.xml</value>
+				<value>cn/xinhuo/entity/Yonghu.hbm.xml</value>
+				<value>cn/xinhuo/entity/Zichanxinxi.hbm.xml</value>
+				<value>cn/xinhuo/entity/Pre.hbm.xml</value></list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+		         <prop key="hibernate.show_sql">true</prop>
+		         <prop key="hibernate.format_sql">true</prop>
+		         <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> 
+		           
+			</props>
+		</property>
+	</bean>
+	<aop:config>
+		<aop:advisor
+			pointcut="execution(* cn.xinhuo.interf.impl.*.*(..))"
+			advice-ref="tx-advice" />
+	</aop:config>
+	<tx:advice id="tx-advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<import resource="applicationContext_dao.xml"/>
+	<import resource="applicationContext_service.xml"/>	
+	</beans>

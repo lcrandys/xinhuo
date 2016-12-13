@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> 
+<meta name="format-detection" content="telephone=no">
+<title>填写借款信息</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="css/jquery.step.css">
+</head>
+
+<body>
+<!--提示-->
+    <div class="message">
+        <i></i>您填写的信息将被加密处理，仅供借款申请使用。
+    </div>
+<!--提示 end-->
+<div class="step-body" id="myStep">
+    
+    
+    <div class="step-header clearfix" style="">
+        <ul>
+            <li><p>个人信息</p></li>
+            <li><p>店面信息</p></li>
+            <li><p>资产信息</p></li>
+        </ul>
+    </div>
+
+    <div class="step-content infobox clearfix">
+        <div class="step-list">
+            <div class="form-group border-b">
+                <label class="control-label">
+                    姓名
+                </label>
+                <input id="xinming" type="text" class="form-control" name="debt-credit" placeholder="请输入真实姓名">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    手机号
+                </label>
+                <input id="phone" type="text" class="form-control" name=" installment " placeholder="请输入正确手机号" reg=/^1\d{10}$/;>
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    身份证
+                </label>
+                <input id="shengfeng" type="text" class="form-control" name=" installment " placeholder="请输入身份证号码">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    居住地址
+                </label>
+                <input id="juzhudizhi" type="text" class="form-control" name=" installment " placeholder="请输入居住地址">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    营业地址
+                </label>
+                <input id="yingyedizhi" type="text" class="form-control" name=" installment " placeholder="请输入营业地址">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    婚姻状况
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="marriage" class="demo-test-select1" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">未婚</option>
+                        <option value="2">已婚</option>
+                        <option value="3">离异</option>
+                        <option value="4">丧偶</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    学历
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="education" class="demo-test-select" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">高中及以下</option>
+                        <option value="2">专科</option>
+                        <option value="3">本科</option>
+                        <option value="4">硕士及以上</option>
+                    </select>
+                </div>
+            </div>
+            <button id="nextBtn" class="btn mt10">下一步</button>
+        </div>
+        
+        
+        <div class="step-list">
+        <div class="form-group">
+                <label class="control-label">
+                        开业年月
+                </label>
+                <div data-role="fieldcontain" class="demo-select-date fr">
+                    <select id="openMonth" class="demo-test-select" data-role="none">
+                        <option value="0">请选择月</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div data-role="fieldcontain" class="demo-select-date fr">
+                    <select id="openYear" class="demo-test-select" data-role="none">
+                        <option value="0">请选择年</option>
+                        <option value="1999">1999</option>
+                        <option value="2000">2000</option>
+                        <option value="2001">2001</option>
+                        <option value="2002">2002</option>
+                        <option value="2003">2003</option>
+                        <option value="2004">2004</option>
+                        <option value="2005">2005</option>
+                        <option value="2006">2006</option>
+                        <option value="2007">2007</option>
+                        <option value="2008">2008</option>
+                        <option value="2009">2009</option>
+                        <option value="2010">2010</option>
+                        <option value="2011">2011</option>
+                        <option value="2012">2012</option>
+                        <option value="2013">2013</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    年销售额
+                </label>
+                <input id="nianxiaoshou" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name="debt-credit" placeholder="请输入年销售额(元)">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    月销售额
+                </label>
+                <input id="yuexiaoshou" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="请输入月销售额(元)">
+            </div>
+            <div class="form-group border-bd">
+                <label class="control-label">
+                    客单价
+                </label>
+                <input id="kedan" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="请输入客单价(元)">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    单月水电费用
+                </label>
+                <input id="danyueshuidian" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="请输入单月水电费用(元)">
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    单月房租费用
+                </label>
+                <input id="danyuefangzu" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="请输入单月房租费用(元)">
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    单月员工工资
+                </label>
+                <input id="danyueyuangong" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="请输入单月员工工资(元)">
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    食材占比(%)
+                </label>
+                <input id="percentage" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  type="text" class="form-control" name=" installment " placeholder="食材成本占月流水百分比">
+            </div>
+            <button id="preBtn" class="btn-primary mt10">上一步</button>
+            <button id="submitBtn" class="btn-primary mt10">下一步</button>
+        </div>
+        
+        <div class="step-list">
+            <div class="form-group border-b">
+                <label class="control-label">
+                    是否有房
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="home" class="demo-test-select" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">无房</option>
+                        <option value="2">有房无抵押</option>
+                        <option value="3">有房有抵押</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    是否有车
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="car" class="demo-test-select" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">无车</option>
+                        <option value="2">有车无抵押</option>
+                        <option value="3">有车有抵押</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group border-b">
+                <label class="control-label">
+                    信用情况
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="credit" class="demo-test-select" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">无信用卡或贷款</option>
+                        <option value="2">信用良好</option>
+                        <option value="3">1年内逾期少于3次且少于90天</option>
+                        <option value="4">1年内逾期超过3次或超过90天</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    是否有商铺
+                </label>
+                <div data-role="fieldcontain" class="demo-select fr">
+                    <select id="shops" class="demo-test-select" data-role="none">
+                        <option value="0">请选择</option>
+                        <option value="1">无商铺</option>
+                        <option value="2">自有商铺无抵押</option>
+                        <option value="3">自有商铺有抵押</option>
+                    </select>
+                </div>
+            </div>
+           
+           <button id="preBtn1" class="btn-primary mt10">上一步</button>
+           <button id="tijiao" class="btn-tj">提交</button>
+        </div>
+
+    </div>
+
+</div>
+<h3 class="main tc mt10">请据实填写，避免影响借款进度。</h3>
+<h3 class="main tc mt10">客服电话：0571-85890982</h3>
+<!---->
+
+<!--选择-->
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/mobiscroll.2.13.2.js"></script>
+<script src="ymjs/grxxjs12.js"></script>
+<script type="text/javascript">
+    
+    //保存所有信息
+        $(function () {
+            
+            var opt = {  
+                'default': {
+                    theme: 'default',
+                    mode: 'scroller',
+                    display: 'modal',
+                    animate: 'fade'
+                },
+                
+                
+                'time': {
+                    preset: 'time'
+                },
+                'select': {
+                    preset: 'select'
+                },
+                'sel1': {
+                    preset: 'select'
+                },
+                'sel2': {
+                    preset: 'select'
+                },
+                'sel3': {
+                    preset: 'select'
+                },
+                'sel4': {
+                    preset: 'select'
+                },
+                'sel5': {
+                    preset: 'select'
+                },
+                'sel6': {
+                    preset: 'select'
+                },
+                'sel7': {
+                    preset: 'select'
+                },
+                'sel8': {
+                    preset: 'select'
+                },
+                'select-opt': {
+                    preset: 'select',
+                    group: true,
+                    width: 50
+                }
+            }
+            
+            //$('.demo-test-select').scroller($.extend(opt['select'],opt['default']));                        
+            $('#marriage').scroller($.extend(opt['sel1'],opt['default']));
+            $('#education').scroller($.extend(opt['sel2'],opt['default']));
+            $('#home').scroller($.extend(opt['sel3'],opt['default']));
+            $('#car').scroller($.extend(opt['sel4'],opt['default']));
+            $('#credit').scroller($.extend(opt['sel5'],opt['default']));
+            $('#shops').scroller($.extend(opt['sel6'],opt['default']));
+            $('#openYear').scroller($.extend(opt['sel7'],opt['default']));
+            $('#openMonth').scroller($.extend(opt['sel8'],opt['default']));
+            
+        });
+    </script>
+
+<!--步骤-->
+<script src="js/jquery.step.js"></script>
+<script src="ymjs/grxxjs11.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> 
+<meta name="format-detection" content="telephone=no">
+<title>测试</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script>
+$(function(){
+	$("#bt").click(function(){
+		var dianmianname = $("#dmnm").val();
+		var dianmianid = $("#dmid").val();
+		var man = $("#man").val();
+		var phone = $("#phone").val();
+		var url =encodeURI(encodeURI("index.html?dianmianname="+dianmianname+"&dianmianid="+dianmianid+"&man="+man+"&phone="+phone));
+		window.location.href=url;
+	});
+});
+</script>
+</head>
+
+<body>
+	<input id="dmnm" type="text" placeholder="dianmianname"/>
+	<input id="dmid" type="text" placeholder="dianmianid"/>
+	<input id="man" type="text" placeholder="man"/>
+	<input id="phone" type="text" placeholder="phone"/>
+	<input id="bt" type="button" value="登入"/>
+</body>
+</html>

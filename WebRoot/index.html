@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>鑫火云贷</title>
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+    <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/index.css" type="text/css" media="screen" />    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <!--加载分页js  -->
+	<script type="text/javascript" src="js/jquery.pagination.js"></script>
+	<!-- scripts for this page -->
+    <script src="js/theme.js"></script>        <script src="js/getcookie.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<script>
+$.getUrlParam = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r!=null) return unescape(r[2]); return null; 
+}
+function load(){
+	var session = get_cookie("session");
+	if(session!="1122"){
+		window.location.href="signin.html";
+	}
+}
+	$(document).ready(function() {
+
+		//获取访问次数	
+		$.ajax({
+			type : "get",
+			url : "services/getFangwencishu",
+			dataType : "json",
+			success : function(data) {
+				$("#fwcs").html(data);
+				$("#sjzs").html(data);
+			}
+		});
+		
+		//获取访问次数	
+		$.ajax({
+			type : "get",
+			async:false,
+			url : "services/getFangwencishu",
+			dataType : "json",
+			success : function(data) {
+				fwsum = data;
+			}
+		});
+		
+		/*----------------------分页js start ---------------------*/
+		//回调函数的作用是显示对应分页的列表项内容
+		//回调函数在用户每次点击分页链接的时候执行
+		//参数page_index{int整型}表示当前的索引页
+		var initPagination = function() {
+			var num_entries = Math.ceil(fwsum/20);
+			// 创建分页
+			$("#Pagination").pagination(num_entries, {
+				num_edge_entries: 1, //边缘页数
+				num_display_entries: 4, //主体页数
+				callback: pageselectCallback,
+				items_per_page:1 //每页显示1项
+			});
+		 }();
+		 
+		function pageselectCallback(page_index, jq){
+			var pageNo = page_index+1;
+			$.ajax({
+				type : "get",
+				url : "services/getFangwen",
+				data : {
+					pageNo : pageNo
+				},
+				dataType : "json",
+				success : function(data) {
+					var result = eval(data);
+					var html = "";
+					var dmid = '<tr><td class=\"span3\"><input type=\"checkbox\" name=\"items\" value=\"1\"/>';
+					var dmmc = '</td><td class=\"span3\"><span class=\"line\"></span>';
+					var fwsj = '</td><td class=\"span3\"><span class=\"line\"></span>';
+					var bianji = '</td><td class=\"span3\"> <i class=\"table-delete\" onclick=\"shanchu()\"></i></td></tr>'; 
+					for(var i= 0; i< result.length;i++){
+						var jilu = dmid+result[i]["dianmianId"]+dmmc+result[i]["dianmianmingchen"]+fwsj+result[i]["shijian1"]+bianji;
+						html = html + jilu;
+					}
+					$("tbody").html(html);
+				}
+			}); 
+			//这里插入html
+		}
+		/*----------------------分页js end -----------------------*/
+		
+	});
+	
+	//按时间选择排序
+	function shijian(){
+		alert("按时间选择排序");
+	}
+	
+	//记录删除
+	function shanchu(){
+		var ck = $("input[name='items']");
+					var s=''; 
+			for(var i=0; i<ck.length; i++){ 
+				if(ck[i].checked) s+=ck[i].value+','; //如果选中，将value添加到变量s中 
+			} 
+			//那么现在来检测s的值就知道选中的复选框的值了 
+			if(s==''){
+				alert('你还没有选择任何内容！');;
+			}else{
+				var arr = s.split(",");
+				//除去数组最后一个空值
+				arr.pop();
+				//将数组转json
+				JSON.stringify(arr);
+			}
+	}
+	//分页start
+	//选中页显示数据
+	function xzysj(){
+		alert("选中页数据");
+	}
+	
+</script>
+<body onload="javascript:load()">
+
+    <!-- navbar -->
+    <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar visible-phone" id="menu-toggler">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            <a class="brand" href="index.html"><img src="img/logo.png" /></a>
+        </div>
+    </div>
+    <!-- end navbar -->
+
+    <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li class="active">
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a href="index.html">
+                    <i class="icon-home"></i>
+                    <span>访问记录</span>
+                </a>
+            </li>            
+            <li>
+                <a href="pre.html">
+                    <i class="icon-group"></i>
+                    <span>预贷款用户</span>
+                </a>
+            </li>
+             <li>
+                <a href="user-list.html">
+                    <i class="icon-calendar-empty"></i>
+                    <span>贷款用户</span>
+                </a>
+            </li>
+       
+        </ul>
+    </div>
+    <!-- end sidebar -->
+
+
+	<!-- main container -->
+    <div class="content">
+
+        <div class="container-fluid">
+
+            <!-- upper main stats -->
+            <div id="main-stats">
+                <div class="row-fluid stats-row">
+                    <div class="span3 stat">
+                        <div class="data">
+                           当前访问次数： <span class="number" id="fwcs"></span>次
+                        </div>
+                    </div>
+            </div>
+            
+            <!-- end upper main stats -->
+                <!-- table sample -->
+                <!-- the script for the toggle all checkboxes from header is located in js/theme.js -->
+                <div class="table-products section">
+                    <div class="row-fluid head">
+                      
+                    </div>
+
+                    <div class="row-fluid filter-block">
+                        <div class="pull-right">
+                            <div class="ui-select">
+                                <select id="shijian" onchange="shijian()">
+                                  <option />所有时间段
+                                  <option />本日
+                                  <option />本周
+                                  <option />本月
+                                  <option />三个月
+                                  <option />半年
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span3">
+                                        <input type="checkbox" />
+                                        	店面ID
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>店面名称
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>访问时间
+                                    </th>    
+                                    <th class="span3">
+                                        <span class="line"></span>删除选中
+                                    </th>              
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<!--数据start  -->
+  
+                                <!--数据end  -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <span style="font-size:16px;padding:1px 9px 1px 9px;font-family: Arial, sans-serif;">共<span id="sjzs" style="color: #3b9ff3;padding: 1px 2px 1px 2px;"></span>条数据</span>
+                    <div id="Pagination" class="pagination" style="float:right;font-size:14px;">	
+                	</div>
+                <!-- end table sample -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

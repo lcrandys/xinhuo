@@ -1,0 +1,128 @@
+
+	<title>鑫火云贷</title>
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+    <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/index.css" type="text/css" media="screen" />    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <!--加载分页js  -->
+	<script type="text/javascript" src="js/jquery.pagination.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<script>
+	$(document).ready(function() {
+		function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+		var dianmianid = getUrlParam('dianmianid');
+			$.ajax({
+			type : "get",
+			url : "services/getDaikuanshenqingByperson",
+			dataType : "json",
+			data : {
+				style :-1,
+				dianmianid :dianmianid 
+			},
+			success : function(data) {
+				var result = eval(data);
+				var html = "";
+				var dmmc = '<tr><td class=\"span1\">';
+				var mdid = '</td><td class=\"span1\"><span class=\"line\"></span>';
+				var saasmc ='</td><td class=\"span1\"><span class=\"line\"></span>';
+				var yhmc ='</td><td class=\"span2\"><span class=\"line\"></span>';
+				var yhid = '</td><td class=\"span1\"><span class=\"line\"></span>';
+				var jine = '</td><td class=\"span2\"><span class=\"line\"></span>';
+				var fenqi = '</td><td class=\"span2\"><span class=\"line\"></span>';
+				var dksj ='</td><td class=\"span2\"><span class=\"line\"></span>';
+				var zt = '</td><td class=\"span2\"><span class=\"line\"></span>';
+				var end = '</td></tr>';
+				for(var i= 0; i< result.length;i++){
+					var dianmianId = result[i]["mendianId"].substring(1);
+					var zhuangtai =result[i]["zhuangtai"];
+					if(zhuangtai==1){
+						zhuanagtai="申请贷款";
+					}else if(zhuangtai==2){
+						zhuangtai="放贷";
+					}else if(zhuangtai==3){
+						zhuangtai="驳回";
+					}else if(zhuangtai==4){
+						zhuangtai="还款";
+					}else if(zhuangtai==5){
+						zhuangtai="结束";
+					}
+					var jilu = dmmc+result[i]["dianmianmingchen"]+mdid+dianmianId+saasmc+result[i]["saasmc"]+yhmc+result[i]["yonghumingchen"]+jine+result[i]["jine"]+fenqi+result[i]["fenqi"]+dksj+result[i]["daikuanshijian1"]+zt+zhuangtai+end;
+					html = html + jilu;
+				}
+				$("tbody").html(html);
+			}
+		}); 	
+	});
+	
+</script>
+<body>
+                <div class="table-products section">
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span2">
+                                        	店面名称
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>门店id
+                                    </th>
+                                    <th class="span1">
+                                        <span class="line"></span>来源
+                                    </th>    
+                                    <th class="span1">
+                                        <span class="line"></span>用户名称
+                                    </th>               
+                                    <th class="span1">
+                                        <span class="line"></span>金额
+                                    </th>  
+                                    <th class="span1">
+                                        <span class="line"></span>分期
+                                    </th>  
+                                    <th class="span3">
+                                        <span class="line"></span>贷款时间
+                                    </th>
+                                    <th class="span1">
+                                        <span class="line"></span>状态
+                                    </th>  
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <!--测试start  -->
+                            	
+                                <!--测试end  -->
+                            </tbody>
+                        </table>
+                    </div>
+                   <!--  <span style="font-size:16px;padding:1px 9px 1px 9px;font-family: Arial, sans-serif;">共<span id="dkjlcs" style="color: #3b9ff3;padding: 1px 2px 1px 2px;"></span>条数据</span>
+                    <div id="Pagination" class="pagination" style="float:right;font-size:22px;">	 -->
+                	</div>
+                <!-- end table sample -->
+            </div>
+</body>
+</html>

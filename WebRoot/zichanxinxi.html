@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>鑫火云贷</title>
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+    <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/index.css" type="text/css" media="screen" />    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <!--加载分页js  -->
+	<script type="text/javascript" src="js/jquery.pagination.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<script>
+	$(document).ready(function() {
+		function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+		var yonghuId = getUrlParam('yonghuId');
+			$.ajax({
+			type : "get",
+			url : "services/kehuzichan",
+			dataType : "json",
+			data : {
+				kehuId : yonghuId
+			},
+			success : function(data) {
+				var result = eval(data);	
+				var start = '<tr><td class=\"span2\">';
+				var zc = '</td><td class=\"span2\"><span class=\"line\"></span>';
+				var end =  '</td></tr>'; 
+				var jilu = start+result.fang+zc+result.che+zc+result.shangpu+zc+result.xinyongqingkuang+zc+end;
+				$("tbody").html(jilu);
+			}
+		}); 
+	});
+</script>
+<body>
+                <div class="table-products section">
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="span3">
+                                        	房
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>车
+                                    </th>
+                                    <th class="span3">
+                                        <span class="line"></span>商铺
+                                    </th>    
+                                    <th class="span3">
+                                        <span class="line"></span>信用情况
+                                    </th>              
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <!--测试start  -->
+
+                                <!--测试end  -->
+                            </tbody>
+                        </table>
+                    </div>
+                <!-- end table sample -->
+            </div>
+</body>
+</html>

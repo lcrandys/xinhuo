@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table name="Daikuanjilu" catalog="xinhuo"
+		class="cn.xinhuo.entity.Daikuanjilu">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="Dianmian" catalog="xinhuo"
+		class="cn.xinhuo.entity.Dianmian">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="Dianmianliushui" catalog="xinhuo"
+		class="cn.xinhuo.entity.Dianmianliushui">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="Fangwenjilu" catalog="xinhuo"
+		class="cn.xinhuo.entity.Fangwenjilu">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="SaaS" catalog="xinhuo" class="cn.xinhuo.entity.SaaS">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="Yonghu" catalog="xinhuo"
+		class="cn.xinhuo.entity.Yonghu">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="Zichanxinxi" catalog="xinhuo"
+		class="cn.xinhuo.entity.Zichanxinxi">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+<table name="Pre" catalog="xinhuo" class="cn.xinhuo.entity.Pre">
+	<primary-key>
+		<generator class="native"></generator>
+	</primary-key>
+</table>
+</hibernate-reverse-engineering>

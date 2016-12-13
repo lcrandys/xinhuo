@@ -1,0 +1,10 @@
+WARNING=DO NOT MODIFY THIS FILE IF YOU DON'T UNDERSTAND
+defaultDestination=F\:/apache-tomcat-6.0.41/webapps/XinHuo
+defaultVariables=
+eclipse.preferences.version=1
+includeTeamPrivateFiles=false
+map|0=WebRoot/WEB-INF/classes/cn/xinhuo/entity|F\:/apache-tomcat-6.0.41/webapps/XinHuo/WEB-INF/classes/cn/xinhuo/entity|,|,|,
+map|1=WebRoot/WEB-INF/classes/cn/xinhuo/interf|F\:/apache-tomcat-6.0.41/webapps/XinHuo/WEB-INF/classes/cn/xinhuo/interf|,|,|,
+map|2=WebRoot/WEB-INF/classes/cn/xinhuo/service|F\:/apache-tomcat-6.0.41/webapps/XinHuo/WEB-INF/classes/cn/xinhuo/service|,|,|,
+map|3=WebRoot/WEB-INF/classes/cn/xinhuo/util|F\:/apache-tomcat-6.0.41/webapps/XinHuo/WEB-INF/classes/cn/xinhuo/util|,|,|,
+useCurrentDateForDestinationFiles=false

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> 
+<meta name="format-detection" content="telephone=no">
+<title>填写借款信息</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="ymjs/bcsaas01.js"></script>
+<script type="text/javascript" src="ymjs/pdfeikong03.js"></script>
+<script>
+    //根据传入数据状态显示页面信息
+    $(document).ready(function() {
+        //点击
+        $("#cxsq").click(function(){
+            $("#cwym").attr("style","display:none");
+            $("#dkym").attr("style","");
+            $("#dkym1").attr("style","");
+        });
+        
+        $('.deploy-toggle-1').click(function(){
+            $(this).parent().find('.toggle-content').toggle(100);
+            $(this).toggleClass('toggle-1-active');
+            return false;
+        });
+        
+        //获取传递过来的name值
+        (function($){
+            $.getUrlParam
+             = function(name)
+            {
+            var reg
+             = new RegExp("(^|&)"+
+             name +"=([^&]*)(&|$)");
+            var r
+             = window.location.search.substr(1).match(reg);
+            if (r!=null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+        var name = decodeURI($.getUrlParam('dianmianid'));
+        //获取用户贷款状态
+        $.ajax({
+            type : "get",
+            url : "../services/yndaikuan",
+            data : {
+                saas   : document.getElementById("saasid").innerHTML,
+                name   : name
+            },
+            dataType : "json",
+            success : function(data) {
+                if(data.result==0){
+                    $("#dkym").attr("style","");
+                    $("#dkym1").attr("style","");
+                }else if(data.result==1){
+                    $("#cgym").attr("style","");
+                    $("#p1").html("贷款申请中...<br/><br/>客服电话：0571-85890982");
+                    $("#p1").attr("style","");
+                }else if(data.result==2){
+                    $("#cgym").attr("style","");
+                    $("#p1").html("已成功贷款！<br/><br/>客服电话：0571-85890982");
+                    $("#p1").attr("style","");
+                }else if(data.result==3){
+                    $("#cwym").attr("style","");
+                    $("#wenzi").html("申请已被驳回！<br/>您若希望重新申请借款，还需要您重新返回我要贷款页面再次授权，以便获取营业数据用于借款服务。<br/><br/>客服电话：0571-85890982");
+                    $("#cxsq").attr("style","");
+                }else if(data.result==4){
+                    $("#cwym").attr("style","");
+                    $("#wenzi").html(" 还款中...<br/><br/>客服电话：0571-85890982");
+                }else if(data.result==5){
+                    $("#dkym").attr("style","");
+                    $("#dkym1").attr("style","");
+                }else{
+                    $("#cwym").attr("style","");
+                }
+            },
+            error : function(data){
+                $("#cwym").attr("style","");
+                $("#wenzi").html(" 呀~出错啦，请稍后再试一下吧！");
+            }
+        });  
+    });
+</script>
+</head>
+<body>
+    <!--贷款页面  -->
+        <!--banner-->
+        <div id="dkym" style="display: none">
+            <a href=""><img src="images/banner.png" width="100%"></a>
+        </div>
+        <!--banner end-->
+        <div class="ma10" id="dkym1" style="display: none">
+            <!--介绍-->
+            <div class="introduce">
+                <h3>鑫火云贷</h3>
+                <p class="text">鑫火云贷隶属于鑫火信息科技有限公司，是国内领先的金融服务及风控平台，与杭州银行、北京银行、浙商银行、金华银行等建立了深度战略合作关系，通过对大数据的挖掘和使用，为小微企业提供安全便捷的互联网融资服务。</p>
+            </div>
+            <!--介绍 end-->
+            
+            <!--信息-->
+            <div class="infobox clearfix">
+                <div class="form-group border-b">
+                    <label class="col-sm-3">
+                        借贷金额(1-50万)
+                    </label>
+                    <input id="dkje" type="text" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  name="debt-credit" placeholder="请输入借贷金额(单位：万)">
+                </div>
+                <div class="form-group border-b">
+                    <label class="col-sm-3">
+                        分期期限(3-12月)
+                    </label>
+                    <div data-role="fieldcontain" class="demo-select fr">
+                        <select id="city" class="demo-test-select frm_input" data-role="none">
+                            <option value="0">请选择</option>
+                            <option value="1">3个月</option>
+                            <option value="2">6个月</option>
+                            <option value="3">9个月</option>
+                            <option value="4">12个月</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <div class="checkbox dialog_link">
+                        <label id="lb">
+                            <input id="ckb" type="checkbox" name="agree" value="agree" data-fv-field="agree">
+                              在申请借款时，本人已知晓且同意，授权二维火将本人的店面经营数据提供给鑫火使用，同时意味着同意此次的<div class="button" id="testclick1">《服务协议》</div></label>
+                    </div>
+                </div>
+                <button id="sqjk" type="submit" class="btn" name="signup" value="Sign up">申请借款</button>
+                <div class="orange tc mt10">纯信用借款，日利息最低可至万分之2.7</div>
+                <div class="orange tc mt10">客服电话：0571-85890982</div>
+            </div>
+            <!--信息 end-->
+            
+            <div class="infobox">
+                <div class="toggle-1">
+                    <h3 class="deploy-toggle-1 subNav currentDt">鑫火之服务声明</h3>
+                    <p class="toggle-content">
+                        我司作为撮合您与银行形成借贷交易的居间服务商，就向您提供的服务需要收取服务费，服务费的具体金额标准为您向银行借款金额的5%.<span class="orange">现阶段通过我司的借贷居间服务与银行形成借贷交易的前100名商户，服务费3折，即为您向银行借款金额的
+                        1.5%.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!--申请流程-->
+            <div class="applications">
+                <div class="infobox">
+                    <div class="toggle-1 clearfix">
+                        <h3 class="deploy-toggle-1 subNav currentDt">申请流程</h3>
+                        <p class="toggle-content"><img src="images/applications.png" width="100%"></p>
+                    </div>
+                </div>
+                
+                <div class="infobox" id="">
+                    <div class="toggle-1 clearfix">
+                        <h3 class="deploy-toggle-1 subNav currentDt">申请条件</h3>
+                        <div class="toggle-content">
+                            <p class="border-b">
+                                <span>经营时间</span>
+                                <span>满一年</span>
+                            </p>
+                            <p class="border-b">
+                                <span>平台流水数据</span>
+                                <span>6个月以上</span>
+                            </p>
+                            <p class="border-b">
+                                <span>月营业额</span>
+                                <span>8万以上</span>
+                            </p>
+                            <p>
+                                <span>借款人</span>
+                                <span>法定代表人</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="infobox" id="dkym">
+                    <div class="toggle-1 clearfix">
+                        <h3 class="deploy-toggle-1 subNav currentDt">费用及还款说明</h3>
+                        <div class="toggle-content">
+                            <p class="border-b">
+                                <span>贷款类型</span>
+                                <span>信用贷款</span>
+                            </p>
+                            <p class="border-b">
+                                <span>还款方式</span>
+                                <span>按月付息 到期还本</span>
+                            </p>
+                            <p class="border-b">
+                                <span>贷款利率</span>
+                                <span>日息低至万分之2.7</span>
+                            </p>
+                            <p>
+                                <span>贷款服务费</span>
+                                <span>贷款额的1.5%(前100名)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--分期期限-->
+        <script type="text/javascript" src="js/mobiscroll.2.13.2.js"></script>
+        <script type="text/javascript">
+        
+        $(function () { 
+            var opt = {  
+                'default': {
+                    theme: 'default',
+                    mode: 'scroller',
+                    display: 'modal',
+                    animate: 'fade'
+                },
+                
+                'time': {
+                    preset: 'time'
+                },
+                'select': {
+                    preset: 'select'
+                },
+                'select-opt': {
+                    preset: 'select',
+                    group: true,
+                    width: 50
+                }
+            }
+            
+            $('.demo-test-select').scroller($.extend(opt['select'],opt['default']));            
+            $('.demo-test-select-opt').scroller($.extend(opt['select-opt'],opt['default']));
+        });
+    </script>
+    <!--弹窗-->    
+    <script type="text/javascript" src="js/tinybox.js"></script>
+    <script type="text/javascript">
+    T$('testclick1').onclick = function(){
+        console.log('foo');
+        TINY.box.show('agreement.html',1,300,250,1);
+    };    
+    </script>    
+    <!--下拉-->
+    <script type="text/javascript">    
+        $(function(){
+            $(".subNav").click(function(){
+                $(this).toggleClass("currentDd").siblings(".subNav").removeClass("currentDd");
+                $(this).toggleClass("currentDt").siblings(".subNav").removeClass("currentDt");
+                $(this).next(".navContent").slideToggle(300).siblings(".navContent").slideUp(500);
+            });
+        });
+    </script>
+
+    <!--出错页面  -->
+    <div class="mt80 tc" id="cwym" style="display: none">
+        <img src="images/bug.png" width="60%">
+        <div class="succtit mt30" id="wenzi">
+               
+        </div>
+       <input type="button" id="cxsq" class="btn-primary" style="display: none;" value="重新申请" /> 
+    </div>
+    
+    <!-- 成功页面 -->
+    <div class="succbg" id="cgym" style="display: none">
+    <div class="successbox">
+    
+        <!--提示-->
+        <div class="w80 tc">
+            <img src="images/success.png" height="100" class="mt30">
+            <div class="tc">
+                <p class="border-b succtit" id="p1" style="display:none">恭喜您！借款申请提交成功！</p>
+                <p class="setbacks" id="p2" style="display:none">当前进度：<span class="orange">电话复核</span></p>
+                <p class="grey" id="p3" style="display:none">您可以随时再打开此页面，查看借款进度是否有变化。</p>
+            </div>
+        </div>
+        <!--提示 end-->
+        <img src="images/line.png" width="100%">
+        <div class="w80">
+            
+            <!--注意-->
+            <div class="lookbox">
+                <h3>其他注意事项：</h3>
+                <p>感谢您通过鑫火借款，请您保持手机畅通，以便于我司客服与您联系。
+另外，需要您提前准备复印件（如身份证、营业执照、租房合同等），以便鑫火人员与您门店会面时收取。
+此次居间服务，需要线下签订《借款居间服务协议》，并收取服务费用，请您知晓并理解，感谢。</p>
+                
+            </div>
+            <!--注意 end-->
+            
+        </div>   
+    </div>
+    <img src="images/bgbottom.png" width="100%">
+</div>
+    
+     <!-- 提供saas信息 -->
+    <p id="saasid" hidden="hidden">1</p>
+       <p id="saasmc" hidden="hidden">二维火</p>
+</body>
+</html>

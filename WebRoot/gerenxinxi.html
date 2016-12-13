@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>鑫火云贷</title>
+    
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+    <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+
+    <!-- libraries -->
+    <link href="css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/index.css" type="text/css" media="screen" />    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/jquery-1.10.2.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<script>
+	$(document).ready(function() {
+		//获取传过来的yonghuId
+		function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+		var yonghuId = getUrlParam('yonghuId');
+
+			$.ajax({
+				type : "get",
+				url : "services/kehuxiangqing",
+				dataType : "json",
+				data : {
+					kehuId : yonghuId
+				},
+				success : function(data) {
+					var result = eval(data);
+					var toubu = '<tr><td class=\"span2\"><span class=\"line\"></span></td>'
+					var xingming = '<td class=\"span2\"><span class=\"line\"></span>';
+					var shoujihao = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var shengfenzhenghao = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var hunyinzhuangkuang = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var xueli = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var juzhudizhi = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var yingyedizhi = '</td><td class=\"span2\"><span class=\"line\"></span>';
+					var end =  '</td></tr>'; 
+					var jilu = toubu+xingming+result.xingming+shoujihao+result.shoujihao+shengfenzhenghao+result.shengfenzhenghao+hunyinzhuangkuang+result.hunyinzhuangkuang+xueli+result.xueli+juzhudizhi+result.juzhudizhi+yingyedizhi+result.yingyedizhi+end;
+					$("tbody").html(jilu);
+				}
+			}); 
+	});
+</script>
+<body>
+                <div class="table-products section">
+
+                    <div class="row-fluid">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                 	<th class="span2">
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>姓名
+                                    </th>
+                                    <th class="span2">
+                                        <span class="line"></span>手机号
+                                    </th>    
+                                    <th class="span2">
+                                        <span class="line"></span>身份证号
+                                    </th>     
+                                    <th class="span2">
+                                        <span class="line"></span>婚姻状况
+                                    </th>           
+                                    <th class="span2">
+                                        <span class="line"></span>学历
+                                    </th>  
+                                    <th class="span2">
+                                        <span class="line"></span>居住地址
+                                    </th>  
+                                    <th class="span2">
+                                        <span class="line"></span>营业地址
+                                    </th>  
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <!--测试start  -->    
+    
+                                <!--测试end  -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                <!-- end table sample -->
+            </div>
+</body>
+</html>
