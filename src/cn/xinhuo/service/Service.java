@@ -101,6 +101,63 @@ public class Service {
         return sheet;
     }
 
+    @GET
+    @Path("/downLiuShui")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM) //
+    public void downLiuShui(@QueryParam("dianmianId") String dianmianId, @Context HttpServletRequest request,
+            @Context HttpServletResponse response) {
+        if (StringUtils.isBlank(dianmianId)) {
+            throw new IllegalArgumentException("dianmianId is null");
+        }
+        // 获取该店面所有的店面流水数据
+        List<Dianmianliushui> allDianMianLiushui = getAllDianMianLiuShui("1" + dianmianId);
+        // 创建一个Excel文件
+        HSSFWorkbook workBook = new HSSFWorkbook();
+        // 创建第一个sheet
+        HSSFSheet sheet = createSheet(workBook, 0, "经营流水");
+        // 设置cell默认style
+        CellStyle cellStyle = getDefautHeaderStyle(workBook);
+        cellStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+        HSSFRow sheetRow = sheet.createRow(0);
+        HSSFCell sheetCell = sheetRow.createCell((short) 0);
+        // 经营流水sheet的header
+        String[] sheetHeader = new String[] { "店面ID", "日期", "营业单数", "客流人数", "营业金额", "店面名称" };
+        for (int i = 0; i < sheetHeader.length; i++) {
+            sheetCell.setCellValue(sheetHeader[i]);
+            sheetCell.setCellStyle(cellStyle);
+            sheetCell = sheetRow.createCell((i + 1));
+        }
+        String dianmianName = "";
+        for (int i = 0; i < allDianMianLiushui.size(); i++) {
+            sheetRow = sheet.createRow((i + 1));
+            Dianmianliushui liushui = allDianMianLiushui.get(i);
+            dianmianName = liushui.getDianmianmingchen();
+            sheetRow.createCell(0).setCellValue(liushui.getDianmianId());
+            sheetRow.createCell(1).setCellValue(liushui.getRiqi());
+            sheetRow.createCell(2).setCellValue(liushui.getYinyedanshu());
+            sheetRow.createCell(3).setCellValue(liushui.getKeliurenshu());
+            sheetRow.createCell(4).setCellValue(liushui.getYinyejine());
+            sheetRow.createCell(5).setCellValue(liushui.getDianmianmingchen());
+        }
+        ServletOutputStream out = null;
+        try { // 如果文件名有中文，必须URL编码 String
+              // fileName = URLEncoder.encode(fileName, "UTF-8"); fileName = newString(fileName.getBytes("gb2312"),
+              // "ISO8859-1");
+            String fileName = URLEncoder.encode(StringUtils.isBlank(dianmianName) ? "店面流水" : dianmianName, "UTF-8");
+            fileName = new String(fileName.getBytes("gb2312"), "ISO8859-1");
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xls");
+            out = response.getOutputStream();
+            workBook.write(out);
+            out.close();
+            out.flush();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("【预贷款店面】-" + (StringUtils.isBlank(dianmianName) ? "店面流水" : dianmianName) + "经营流水下载完成!");
+    }
+
     /**
      * 下载每家店面的经营流水和明细情况
      * 
@@ -133,8 +190,8 @@ public class Service {
         // 设置cell默认style
         CellStyle cellStyle = getDefautHeaderStyle(workBook);
         cellStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
-        HSSFRow firstSheetRow = firstSheet.createRow((int) 0);
-        HSSFRow secondSheetRow = secondSheet.createRow((int) 0);
+        HSSFRow firstSheetRow = firstSheet.createRow(0);
+        HSSFRow secondSheetRow = secondSheet.createRow(0);
         HSSFCell firstSheetCell = firstSheetRow.createCell((short) 0);
         HSSFCell secondSheetCell = secondSheetRow.createCell((short) 0);
         // 经营流水sheet的header
@@ -226,7 +283,6 @@ public class Service {
             response.reset();
             response.setContentType("application/vnd.ms-excel;charset=UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xls");
-            // Workbook workBook1 = ExcelUtil.defaultExport(false, allDianMianLiushui,define, "体检年度的排期");
             out = response.getOutputStream();
             workBook.write(out);
             out.close();
@@ -234,16 +290,6 @@ public class Service {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        // 序号 申请时间 门店ID 店面名称 金额 分期 | 姓名 手机号 身份证号 居住地址 营业地址 婚姻状况 学历 | 年销售 月销售额 客单价 单月水电费 单月房租 单月员工工资 | 房 车 信用情况 商铺
-        // FileOutputStream outputStream;
-        // try {
-        // outputStream = new FileOutputStream("C://Users//Administrator//Desktop//" + shop.getMingchen() + ".xls");
-        // workBook.write(outputStream);
-        // outputStream.flush();
-        // outputStream.close();
-        // } catch (Exception e) {
-        // System.out.println(e.getMessage());
-        // }
         System.out.println("文件下载done!");
     }
 
@@ -514,33 +560,19 @@ public class Service {
     @Produces("application/json;charset=UTF-8")
     @Consumes("application/json;charset=UTF-8")
     @Path("/submitDaikuanshenqing/")
-    public boolean submitDaikuanshenqing(
-            @QueryParam("jine") String jine, 
-            @QueryParam("fenqi") String fenqi,
-            @QueryParam("xinming") String xinming, 
-            @QueryParam("shengfeng") String shengfeng,
+    public boolean submitDaikuanshenqing(@QueryParam("jine") String jine, @QueryParam("fenqi") String fenqi,
+            @QueryParam("xinming") String xinming, @QueryParam("shengfeng") String shengfeng,
             @QueryParam("juzhudizhi") String juzhudizhi, @QueryParam("yingyedizhi") String yingyedizhi,
-            @QueryParam("phone") String phone, 
-            @QueryParam("hunyin") String hunyin, 
-            @QueryParam("xueli") String xueli,
-            @QueryParam("nianxiaoshou") String nianxiaoshou, 
-            @QueryParam("yuexiaoshou") String yuexiaoshou,
-            @QueryParam("kedan") String kedan, 
-            @QueryParam("danyueshuidian") String danyueshuidian,
-            @QueryParam("danyueyuangong") String danyueyuangong, 
-            @QueryParam("danyuefangzu") String danyuefangzu,
-            @QueryParam("percentage") String percentage,
- @QueryParam("openYear") String openYear,
-            @QueryParam("openMonth") String openMonth,
-            @QueryParam("yingyezhizhao") String yingyezhizhao, 
-            @QueryParam("zufanghetong") String zufanghetong,
-            @QueryParam("fang") String fang, 
-            @QueryParam("che") String che, 
-            @QueryParam("shangpu") String shangpu,
-            @QueryParam("xinyongqingkuang") String xinyongqingkung, 
-            @QueryParam("dianpuname") String dianpu,
-            @QueryParam("dianpuid") String dianpuid, 
-            @QueryParam("saasid") int saasid,
+            @QueryParam("phone") String phone, @QueryParam("hunyin") String hunyin, @QueryParam("xueli") String xueli,
+            @QueryParam("nianxiaoshou") String nianxiaoshou, @QueryParam("yuexiaoshou") String yuexiaoshou,
+            @QueryParam("kedan") String kedan, @QueryParam("danyueshuidian") String danyueshuidian,
+            @QueryParam("danyueyuangong") String danyueyuangong, @QueryParam("danyuefangzu") String danyuefangzu,
+            @QueryParam("percentage") String percentage, @QueryParam("openYear") String openYear,
+            @QueryParam("openMonth") String openMonth, @QueryParam("yingyezhizhao") String yingyezhizhao,
+            @QueryParam("zufanghetong") String zufanghetong, @QueryParam("fang") String fang,
+            @QueryParam("che") String che, @QueryParam("shangpu") String shangpu,
+            @QueryParam("xinyongqingkuang") String xinyongqingkung, @QueryParam("dianpuname") String dianpu,
+            @QueryParam("dianpuid") String dianpuid, @QueryParam("saasid") int saasid,
             @QueryParam("saasmc") String saasmc) {
         Yonghu yonghu = new Yonghu();
         yonghu.setSaaSId(new Integer(saasid));

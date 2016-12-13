@@ -45,6 +45,11 @@
 		});
 	}
 
+	//下载经营流水
+    function downLiuShui(obj){
+    	var dianmianId =obj.getAttribute("dianmianid");
+        window.location.href = "services/downLiuShui?dianmianId="+dianmianId;
+    }
 	$.getUrlParam = function(name)
 	{
 	    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -109,8 +114,9 @@
 					var result = eval(data);
 					var html="";
 					var dmid = '<tr class=\"first\"><td><a class=\"btn-glow\" onclick=\"xzls(this);\"  preid=\"';
-					var dmid1 = '\">下载流水</a><span class=\"subtext\">';
-					var dmmc ='</span></td><td>';
+					var dmid1 = '\">拉取流水</a><span class=\"subtext\">';
+					var dmmc ='</span><a class=\"btn-glow\" onclick=\"downLiuShui(this);\" dianmianid=\"';
+					var xxx = '\">下载流水</a></td><td>';
 					var saasid = '</td><td>';
 					var saasmc = '</td><td class=\"align-right\">';
 					var yjdsj = ' </td><td class=\"align-right\">';
@@ -124,7 +130,7 @@
 							var liushuiId = result[i]["saasid"].toString()+result[i]["dianmianId"].toString();
 						}
 
-						var jilu = dmid+result[i]["id"]+dmid1+result[i]["dianmianId"]+dmmc+result[i]["dmmc"]+saasmc+result[i]["saasmc"]+yjdsj+result[i]["shijian"]+yjdr+result[i]["man"]+phone+result[i]["phone"]+end;
+						var jilu = dmid+result[i]["id"]+dmid1+result[i]["dianmianId"]+dmmc+result[i]["dianmianId"]+xxx+result[i]["dmmc"]+saasmc+result[i]["saasmc"]+yjdsj+result[i]["shijian"]+yjdr+result[i]["man"]+phone+result[i]["phone"]+end;
 						html = html + jilu;
 					}
 					$("tbody").html(html);
